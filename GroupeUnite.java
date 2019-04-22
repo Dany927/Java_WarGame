@@ -12,4 +12,5 @@ public class GroupeUnite
 		Unite perso = new Unite(nom, pv, p_att, p_def, depl, vision);
 		liste_unite.add(perso);
 	}
+
 }
