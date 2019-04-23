@@ -3,16 +3,8 @@ import java.util.Scanner;
 
 public class Equipe
 {
-	private int identifiant;
+
 	private ArrayList<Unite> liste_unite_equipe = new ArrayList<Unite>();
-
-	Equipe(int identifiant)
-	{
-		this.identifiant = identifiant;
-	}
-
-	public int getIdentifiant() { return this.identifiant; }
-
 	public ArrayList<Unite> getListeEquipe() { return liste_unite_equipe; }
 
 	void ajoutEquipe(ArrayList<Unite> liste)
@@ -31,12 +23,7 @@ public class Equipe
 		do
 		{
 			j+=1;
-			System.out.println("Veuillez choisir une unite (num) ");
-			do
-			{
-				System.out.print("Choix : ");
-				choix = sc.nextInt();
-			}while(choix<0||choix>=liste.size());
+			choix = selectionUniteEquipe(liste);
 
 			liste_unite_equipe.add(liste.get(choix));
 
@@ -60,103 +47,152 @@ public class Equipe
 		System.out.println();
 	}
 
-	void deplacer(Plateau plat, GroupeTerrain terrain)
+	int selectionUniteEquipe(ArrayList<Unite> liste_unite)
+	{
+		int choix;
+		Scanner sc = new Scanner(System.in);
+
+		do
+		{
+			System.out.print("Choix : ");
+			choix = sc.nextInt();
+		}while(choix<0||choix>=liste_unite.size());
+		return choix;
+	}
+
+	void verifProchaineCol(int identifiant)
+	{
+		int choix;
+		Scanner sc = new Scanner(System.in);
+
+		System.out.println("Coord : [" + this.getListeEquipe().get(identifiant).ligne + "][" + this.getListeEquipe().get(identifiant).colonne + "] / 1) Right 2) Left 3) Same"); //colonne
+		do
+		{
+			System.out.print("Choix : ");
+	    	choix=sc.nextInt();
+		}while(choix!=1&&choix!=2&&choix!=3);
+
+		if (choix==1)
+		{
+			//si la colonne du personnage ne sort pas du plateau tout a droite (colonne<=10)
+			//alors on effectue l'opération (+1) et on met un etat a faux
+			if (this.getListeEquipe().get(identifiant).colonne+1<10)
+			{
+				this.getListeEquipe().get(identifiant).colonne+=1;
+			}
+		}
+		else if (choix==2)
+		{
+			//si la colonne du personnage ne sort pas du plateau tout a gauche (colonne>=0)
+			//alors on effectue l'opération (-1) et on met un etat a faux
+			if (this.getListeEquipe().get(identifiant).colonne-1>=0)
+			{
+				this.getListeEquipe().get(identifiant).colonne-=1;
+			}
+		
+		}
+		return;
+	}
+
+	void verifProchaineLig(int identifiant)
+	{
+		int choix;
+		Scanner sc = new Scanner(System.in);
+
+		//Coord : [ligne][colonne] / 1) Up 2) Down 3) Same
+		System.out.println("Coord: [" + this.getListeEquipe().get(identifiant).ligne + "][" + this.getListeEquipe().get(identifiant).colonne +"] / 1) Up 2) Down 3) Same"); //ligne
+		do
+		{
+			System.out.print("Choix : ");
+	    	choix=sc.nextInt();
+		}while(choix!=1&&choix!=2&&choix!=3);
+
+		//UP
+		if (choix==1)
+		{
+			//si la ligne du personnage en haut ne sort pas du plateau tout en haut (ligne=0)
+			//alors on effectue l'opération (-1) et on met un etat a faux
+			if (this.getListeEquipe().get(identifiant).ligne-1>=0)
+			{
+				this.getListeEquipe().get(identifiant).ligne-=1;	
+			}
+		
+		}
+		//DOWN
+		else if (choix==2)
+		{
+			//si la ligne du personnage en bas ne sort pas du plateau tout en bas (ligne=10 ici)
+			//alors on effectue l'operation (+1) et on met stay a faux
+			if (this.getListeEquipe().get(identifiant).ligne+1<10)
+			{
+				this.getListeEquipe().get(identifiant).ligne+=1;	
+			}
+		}
+		
+		return;
+	}
+
+	boolean verifProchaineCase(int identifiant, Plateau plat)
+	{
+		//si la case qu'on a choisi est occupe par un personnage alors on ne peut pas s'y deplacer
+		System.out.println("Case occupe par un autre perso ? " + plat.getEtatOccupe()[this.getListeEquipe().get(identifiant).ligne][this.getListeEquipe().get(identifiant).colonne] );
+		return (plat.getEtatOccupe()[this.getListeEquipe().get(identifiant).ligne][this.getListeEquipe().get(identifiant).colonne]);
+	}
+
+	void deplacer(Plateau plat, GroupeTerrain terrain, int tour)
 	{
 		int identifiant;
 		Scanner sc = new Scanner(System.in);
-		int ligne, ligne_prec;
-		int colonne, colonne_prec;
-		int depl;
-		int cout_case;
+		int ligne_prec, colonne_prec;
 		int choix;
-		boolean stay = false;
+		boolean occupe=false;
+		int cout_case;
+		int depl;
 
 		//afficher les joueurs de notre equipe pour pouvoir le selectionner
 		this.afficheCarac(this.getListeEquipe());
 
-		System.out.println("Veuillez choisir une unite (num) ");
-		do
+		for (int i=0;i<this.getListeEquipe().size();i++)
 		{
-			System.out.print("Choix : ");
-			identifiant = sc.nextInt();
-		}while(identifiant<0||identifiant>=this.getListeEquipe().size());
+			System.out.println(i + ") Coord : " + this.getListeEquipe().get(i).ligne + " " + this.getListeEquipe().get(i).colonne);
+		}
 
-		// ligne et colonne du perso qu'on a choisi
-		ligne = this.getListeEquipe().get(identifiant).ligne;
-		colonne = this.getListeEquipe().get(identifiant).colonne;
-		depl = this.getListeEquipe().get(identifiant).getDepl();
+		identifiant = selectionUniteEquipe(this.getListeEquipe()); //on recupere l'identifiant du joueur qu'on joue
+		depl = this.getListeEquipe().get(identifiant).getDepl();   //on obtient son nombre de points de deplacement
 
 
 		do
 		{
-			ligne_prec = ligne;
-			colonne_prec = colonne;
+			//on sauvegarde la ligne / colonne precedente en cas de probleme et pour effacer dans la matrice
+			ligne_prec = this.getListeEquipe().get(identifiant).ligne; 
+			colonne_prec = this.getListeEquipe().get(identifiant).colonne; 
 
 			System.out.println("Vous avez " + depl + " points de deplacements restants");
+			verifProchaineLig(identifiant);	//verif si on sort du tableau ou non niveau ligne
+			verifProchaineCol(identifiant);  //verif si on sort du tableau ou non niveau colonne
+			occupe = verifProchaineCase(identifiant, plat); //verif si la prochaine case est occupe
 
-			System.out.println("Coord: " + ligne + " " + colonne +" / 1) Up 2) Down 3) Same");
-			do
-			{
-				System.out.print("Choix : ");
-		    	choix=sc.nextInt();
-			}while(choix!=1&&choix!=2&&choix!=3);
+			// cout_case = terrain.ListeTerrain.get(plat[ligne][colonne]).getDeplTerrain()
+			cout_case = terrain.getListeTerrain().get( plat.getCases()[this.getListeEquipe().get(identifiant).ligne][this.getListeEquipe().get(identifiant).colonne] ).getDeplTerrain();
 
-			if (choix==1)
-			{
-				if (ligne-1>=0)
-				{
-					ligne-=1;
-					
-				}
+			System.out.print("Prochaine case : " + plat.getCases()[this.getListeEquipe().get(identifiant).ligne][this.getListeEquipe().get(identifiant).colonne]);
+			System.out.print(" / Cout de la case :  " + cout_case);
+			System.out.println(" / Coord : " + this.getListeEquipe().get(identifiant).ligne + " " + this.getListeEquipe().get(identifiant).colonne);
 			
+
+			if (depl-cout_case<0||occupe==true) //si probleme sur la prochaine ligne ou prochaine colonne, rester sur place
+			{
+				System.out.println("\n** NE PEUT PAS SE DEPLACER! **");
+				System.out.println("** VOIR COUT DE LA CASE ou SI CASE DEJA OCCUPE **\n");
+				this.getListeEquipe().get(identifiant).ligne = ligne_prec;
+				this.getListeEquipe().get(identifiant).colonne = colonne_prec;
 			}
-			else if (choix==2)
+			else
 			{
-				if (ligne+1<=10)
-				{
-					ligne+=1;	
-					
-				}
-				
-			}
-
-		    System.out.println("Coord : " + ligne + " " + colonne + " / 1) Right 2) Left 3) Same");
-			do
-			{
-				System.out.print("Choix : ");
-		    	choix=sc.nextInt();
-			}while(choix!=1&&choix!=2&&choix!=3);
-
-			if (choix==1)
-			{
-				if (colonne+1>=10)
-				{
-					colonne+=1;
-					
-				}
-			
-			}
-			else if (choix==2)
-			{
-				if (colonne-1<=0)
-				{
-					colonne-=1;
-					
-				}
-			
-			}
-
-
-			cout_case = terrain.getListeTerrain().get(plat.getCases()[ligne][colonne]).getDeplTerrain();
-
-			System.out.println("Prochaine case : " + plat.getCases()[ligne][colonne] + " / coord : " + ligne + " " + colonne);
-			System.out.println("Cout de la case : " + cout_case);
-			if (depl-cout_case>=0)
-			{
-				plat.effacerPosUnites(ligne_prec,colonne_prec);
-				plat.setPosUnites(this.getIdentifiant(),ligne,colonne);
-				depl -= cout_case;
-				plat.affichagePlateau();
+				plat.effacerPosUnites(ligne_prec,colonne_prec); //effacer case precdente
+				plat.setPosUnites(tour,this.getListeEquipe().get(identifiant).ligne,this.getListeEquipe().get(identifiant).colonne); //afficher nouvelle pos
+				depl -= cout_case; //calculer le nouveau cout de deplacement
+				plat.affichagePlateau(); //afficher la nouvelle matrice
 			}
 			
 

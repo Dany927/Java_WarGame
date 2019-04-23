@@ -51,10 +51,10 @@ public class Plateau
 
     public boolean[][] getEtatOccupe() { return occupe; }
 
-    public int[][] setPosUnites(int identifiant, int ligne, int colonne)
+    public int[][] setPosUnites(int tour, int ligne, int colonne)
     {
         occupe[ligne][colonne]=true;
-        if (identifiant==1)
+        if (tour==1)
         {
             pos_unites[ligne][colonne]=1; //equipe 1
         }
@@ -73,14 +73,14 @@ public class Plateau
         return pos_unites;
     }
 
-    void initPosUnites(Equipe eq, int ligne, int colonne)
+    void initPosUnites(Equipe eq, int tour, int ligne, int colonne)
     {
         int i,j;
         for (i=0;i<eq.getListeEquipe().size();i++)
         {
             eq.getListeEquipe().get(i).ligne = ligne;
             eq.getListeEquipe().get(i).colonne = colonne;
-            this.setPosUnites(eq.getIdentifiant(),ligne,colonne);
+            this.setPosUnites(tour,ligne,colonne);
 
             colonne+=1;
         }
@@ -113,11 +113,12 @@ public class Plateau
 
     public static void main(String[] args)
     {
+        int tour_de_jeu=0; //equipe1 qui commence (1 pour equipe2)
         Plateau plat = new Plateau();       
 
         //deux equipes
-        Equipe equipe1 = new Equipe(1); //identifiant envoye en parametre
-        Equipe equipe2 = new Equipe(2); //identifiant envoye en parametre
+        Equipe equipe1 = new Equipe();
+        Equipe equipe2 = new Equipe(); 
 
         GroupeUnite perso = new GroupeUnite();
         GroupeTerrain terrain = new GroupeTerrain();
@@ -142,16 +143,28 @@ public class Plateau
 
         terrain.afficheCaracTerrain();
 
-        plat.affichagePlateau();
-
         //intialiser le positionnement des unites de l'equipe 1
         //initPosUnites(ligne,colonne) : coord de la premiere unite
         //puis on augmente la colonne pour les autres unites
-        plat.initPosUnites(equipe1,0,4);
-        plat.initPosUnites(equipe2,9,4);
+        plat.initPosUnites(equipe1,1,0,4);
+        plat.initPosUnites(equipe2,2,9,4);
 
+        System.out.println("Matrices : A gauche, Terrain de jeu / A droite, Positionnement des unites");
         plat.affichagePlateau();
 
-        equipe1.deplacer(plat, terrain);
+        while(true)
+        {
+            System.out.println("Tour de l'equipe " + (tour_de_jeu+1));
+            if (tour_de_jeu==0)
+            {
+                equipe1.deplacer(plat, terrain, 1);
+            }
+            else
+            {
+                equipe2.deplacer(plat, terrain, 2);
+            }
+            tour_de_jeu+=1;
+            tour_de_jeu%=2; //modulo 2
+        }
     }
 }
