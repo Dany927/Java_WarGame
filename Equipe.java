@@ -60,12 +60,12 @@ public class Equipe
 		return choix;
 	}
 
-	void verifProchaineCol(int identifiant)
+	int verifProchaineCol(int identifiant)
 	{
 		int choix;
 		Scanner sc = new Scanner(System.in);
 
-		System.out.println("Coord : [" + this.getListeEquipe().get(identifiant).ligne + "][" + this.getListeEquipe().get(identifiant).colonne + "] / 1) Right 2) Left 3) Same"); //colonne
+		System.out.println("Coord : [" + this.getListeEquipe().get(identifiant).ligne + "][" + this.getListeEquipe().get(identifiant).colonne + "] / 1) Right 2) Left 3) Same "); //colonne
 		do
 		{
 			System.out.print("Choix : ");
@@ -91,10 +91,10 @@ public class Equipe
 			}
 		
 		}
-		return;
+		return choix;
 	}
 
-	void verifProchaineLig(int identifiant)
+	int verifProchaineLig(int identifiant)
 	{
 		int choix;
 		Scanner sc = new Scanner(System.in);
@@ -129,7 +129,7 @@ public class Equipe
 			}
 		}
 		
-		return;
+		return choix;
 	}
 
 	boolean verifProchaineCase(int identifiant, Plateau plat)
@@ -144,7 +144,7 @@ public class Equipe
 		int identifiant;
 		Scanner sc = new Scanner(System.in);
 		int ligne_prec, colonne_prec;
-		int choix;
+		int choix_lig, choix_col;
 		boolean occupe=false;
 		int cout_case;
 		int depl;
@@ -160,16 +160,16 @@ public class Equipe
 		identifiant = selectionUniteEquipe(this.getListeEquipe()); //on recupere l'identifiant du joueur qu'on joue
 		depl = this.getListeEquipe().get(identifiant).getDepl();   //on obtient son nombre de points de deplacement
 
-
 		do
 		{
+			System.out.println("Pour passer votre tour, rester sur votre place (SAME puis SAME)\n");
 			//on sauvegarde la ligne / colonne precedente en cas de probleme et pour effacer dans la matrice
 			ligne_prec = this.getListeEquipe().get(identifiant).ligne; 
 			colonne_prec = this.getListeEquipe().get(identifiant).colonne; 
 
 			System.out.println("Vous avez " + depl + " points de deplacements restants");
-			verifProchaineLig(identifiant);	//verif si on sort du tableau ou non niveau ligne
-			verifProchaineCol(identifiant);  //verif si on sort du tableau ou non niveau colonne
+			choix_lig = verifProchaineLig(identifiant);	//verif si on sort du tableau ou non niveau ligne
+			choix_col = verifProchaineCol(identifiant);  //verif si on sort du tableau ou non niveau colonne
 			occupe = verifProchaineCase(identifiant, plat); //verif si la prochaine case est occupe
 
 			// cout_case = terrain.ListeTerrain.get(plat[ligne][colonne]).getDeplTerrain()
@@ -182,6 +182,12 @@ public class Equipe
 
 			if (depl-cout_case<0||occupe==true) //si probleme sur la prochaine ligne ou prochaine colonne, rester sur place
 			{
+				if (choix_lig==3&&choix_col==3)
+				{
+					System.out.println("\nIl vous restait " + depl + " points de deplacements restants");
+					System.out.println("Vous avez passe votre tour!\n");
+					return;
+				}
 				System.out.println("\n** NE PEUT PAS SE DEPLACER! **");
 				System.out.println("** VOIR COUT DE LA CASE ou SI CASE DEJA OCCUPE **\n");
 				this.getListeEquipe().get(identifiant).ligne = ligne_prec;
