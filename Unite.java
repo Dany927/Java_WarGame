@@ -18,13 +18,17 @@ public class Unite
 		this.p_def = p_def;
 		this.depl = depl;
 		this.vision = vision;
-		//this.ligne=0;
-		//this.colonne=0;
 	}
 
 	public String getNom() { return this.nom; }
 
 	public int getPV() { return this.pv; }
+
+	public int setPV(int value)
+	{
+		this.pv-=value;
+		return this.pv;
+	}
 
 	public int getPAtt() { return this.p_att; }
 
@@ -33,23 +37,6 @@ public class Unite
 	public int getDepl() { return this.depl; }
 
 	public int getVis() { return this.vision; }
-
-	/*public int getLig() { return this.ligne; }
-
-	public int getCol() { return this.colonne; }
-
-	public int setLig(int value)
-	{
-		this.ligne=value;
-		return this.ligne;
-	}
-
-	public int setCol(int value)
-	{
-		this.colonne = value;
-		return this.colonne;
-	}*/
-
 	
 
   	/*

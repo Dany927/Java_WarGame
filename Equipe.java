@@ -159,7 +159,72 @@ public class Equipe
 		return (plat.getEtatOccupe()[this.getListeEquipe().get(identifiant).ligne][this.getListeEquipe().get(identifiant).colonne]);
 	}
 
-	void deplacer(Plateau plat, GroupeTerrain terrain, int tour)
+	
+	int typeAdverse(int identifiant, Equipe eq_adverse)
+	{
+		int i;
+		for (i=0;i<eq_adverse.getListeEquipe().size();i++)
+		{
+			System.out.println("EQ ADVERSE LIG : " + eq_adverse.getListeEquipe().get(i).ligne + " COL : " + eq_adverse.getListeEquipe().get(i).colonne );
+			System.out.println("MEC ACTUEL , LIG : " + this.getListeEquipe().get(identifiant).ligne + " COL : " + this.getListeEquipe().get(identifiant).colonne);
+			if ( (eq_adverse.getListeEquipe().get(i).ligne == this.getListeEquipe().get(identifiant).ligne)&&(eq_adverse.getListeEquipe().get(i).colonne == this.getListeEquipe().get(identifiant).colonne) )
+				return i;
+		}
+		System.out.println("ERREUR! pas trouve votre unite adverse");
+		return -1; //si erreur 
+	}
+
+
+	void attaquer(int identifiant, Plateau plat, GroupeTerrain terrain, Equipe eq_adverse, int ligne_prec, int colonne_prec)
+	{
+		int attaque = 0;
+		int defense_ennemie;
+		double bonus_défense_lieu;
+		int degat;
+		int i_ennemie;
+
+		attaque = this.getListeEquipe().get(identifiant).getPAtt();
+		bonus_défense_lieu = terrain.getListeTerrain().get( plat.getCases()[this.getListeEquipe().get(identifiant).ligne][this.getListeEquipe().get(identifiant).colonne] ).getBonusDef();
+		i_ennemie = this.typeAdverse(identifiant, eq_adverse); //identifiant ennemie
+		defense_ennemie = eq_adverse.getListeEquipe().get(i_ennemie).getPDef(); //avoir les points de defense de l'ennemie
+
+		System.out.println("Attaque : " + attaque + " Def : "+defense_ennemie);
+
+		defense_ennemie = (int) (defense_ennemie * (1+bonus_défense_lieu)); //calculer ses nouveaux points suite au bonus du lieu
+		degat = attaque - defense_ennemie; //calculer les degats infligees
+
+		System.out.println("Attaquant : "+ this.getListeEquipe().get(identifiant).getNom() + " Ennemie : " + eq_adverse.getListeEquipe().get(i_ennemie).getNom());
+		System.out.println("Defense lieu : " + bonus_défense_lieu);
+		System.out.println("Apres bonus defense lieu, point def ennemie : " + defense_ennemie);
+		System.out.println("Degat inflige : " + degat);
+
+		if (degat>0)
+		{
+			eq_adverse.getListeEquipe().get(i_ennemie).setPV(degat); //enlever ses pv de - degat
+			System.out.print("PV ennemie de " + eq_adverse.getListeEquipe().get(i_ennemie).getNom());
+			System.out.println(" : " + eq_adverse.getListeEquipe().get(i_ennemie).getPV());
+			if (eq_adverse.getListeEquipe().get(i_ennemie).getPV()<=0)
+			{
+				System.out.println(eq_adverse.getListeEquipe().get(i_ennemie).getNom() + " est mort!");
+				plat.effacerPosUnites(eq_adverse.getListeEquipe().get(i_ennemie).ligne,eq_adverse.getListeEquipe().get(i_ennemie).colonne); //effacer case joueur tue
+				eq_adverse.getListeEquipe().remove(i_ennemie); // on l'enleve de la liste
+				System.out.println("\nIl ne vous reste plus que ces personnages suivants\n");
+				this.afficheCarac(eq_adverse.getListeEquipe());
+			}
+			else
+			{
+				//si le joueur adverse n'est pas mort on revient a sa position initiale
+				this.getListeEquipe().get(identifiant).ligne = ligne_prec;
+				this.getListeEquipe().get(identifiant).colonne = colonne_prec;
+			}
+		}
+		else
+			System.out.println("DEF ABSOLU! AUCUN DEGAT");
+	    
+  	}
+
+
+	void deplacer(Plateau plat, GroupeTerrain terrain, int tour, Equipe eq_adverse)
 	{
 		int identifiant;
 		Scanner sc = new Scanner(System.in);
@@ -202,11 +267,38 @@ public class Equipe
 
 			if (depl-cout_case<0||occupe==true) //si probleme sur la prochaine ligne ou prochaine colonne, rester sur place
 			{
+				//si on a decide de rester sur place, on passe son tour
 				if (choix_lig==3&&choix_col==3)
 				{
 					System.out.println("\nIl vous restait " + depl + " points de deplacements restants");
 					System.out.println("Vous avez passe votre tour!\n");
 					return;
+				}
+				//si la case etait occupe, on peut peut-etre attaquer 
+				else if (occupe==true)
+				{
+					//on verifie si c'est un partenaire ou non puis on attaque si non
+					if (tour==1)
+					{
+						if(plat.getPosUnites()[this.getListeEquipe().get(identifiant).ligne][this.getListeEquipe().get(identifiant).colonne]==2)
+						{
+							System.out.println("On attaque l'equipe 2!");
+							this.attaquer(identifiant,plat,terrain,eq_adverse, ligne_prec, colonne_prec);
+							//on a attaque, du coup c'est au tour de l'autre equipe de jouer
+							depl -= cout_case; //calculer le nouveau cout de deplacement
+						}
+					}
+					else if (tour==2)
+					{
+						if(plat.getPosUnites()[this.getListeEquipe().get(identifiant).ligne][this.getListeEquipe().get(identifiant).colonne]==1)
+						{
+							System.out.println("On attaque l'equipe 1!");
+							this.attaquer(identifiant,plat,terrain,eq_adverse, ligne_prec, colonne_prec);
+							//on a attaque, du coup c'est au tour de l'autre equipe de jouer
+							depl -= cout_case; //calculer le nouveau cout de deplacement
+						}
+					}
+					
 				}
 				System.out.println("\n** NE PEUT PAS SE DEPLACER! **");
 				System.out.println("** VOIR COUT DE LA CASE ou SI CASE DEJA OCCUPE **\n");

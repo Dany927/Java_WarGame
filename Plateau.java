@@ -110,6 +110,10 @@ public class Plateau
 
     public static void main(String[] args)
     {
+        int ligne_debut_eq1 = 0;
+        int ligne_debut_eq2 = 9;
+        int colonne_debut_eq1 = 4;
+        int colonne_debut_eq2 = 4;
         int tour_de_jeu=0; //equipe1 qui commence (1 pour equipe2)
         Plateau plat = new Plateau();       
 
@@ -136,31 +140,31 @@ public class Plateau
 
         //ajout des personnages créés aux équipes (choix des perso)
         System.out.println("Construction equipe 1 : ");
-        equipe1.ajoutEquipe(perso.getListeUnite(), 0, 4);
+        equipe1.ajoutEquipe(perso.getListeUnite(), ligne_debut_eq1, colonne_debut_eq1);
         System.out.println("Construction equipe 2 : ");
-        equipe2.ajoutEquipe(perso.getListeUnite(), 9, 4);
+        equipe2.ajoutEquipe(perso.getListeUnite(), ligne_debut_eq2, colonne_debut_eq2);
 
         terrain.afficheCaracTerrain();
 
         //intialiser le positionnement des unites de l'equipe 1
         //initPosUnites(ligne,colonne) : coord de la premiere unite
         //puis on augmente la colonne pour les autres unites
-        plat.initPosUnites(equipe1,1,0,4);
-        plat.initPosUnites(equipe2,2,9,4);
+        plat.initPosUnites(equipe1,1,ligne_debut_eq1,colonne_debut_eq1);
+        plat.initPosUnites(equipe2,2,ligne_debut_eq2,colonne_debut_eq2);
 
         System.out.println("Matrices : A gauche, Terrain de jeu / A droite, Positionnement des unites");
-        plat.affichagePlateau();
 
         while(true)
         {
-            System.out.println("Tour de l'equipe " + (tour_de_jeu+1));
+            plat.affichagePlateau();
+            System.out.println("\nTour de l'equipe " + (tour_de_jeu+1));
             if (tour_de_jeu==0)
             {
-                equipe1.deplacer(plat, terrain, 1);
+                equipe1.deplacer(plat, terrain, 1, equipe2);
             }
             else
             {
-                equipe2.deplacer(plat, terrain, 2);
+                equipe2.deplacer(plat, terrain, 2, equipe1);
             }
             tour_de_jeu+=1;
             tour_de_jeu%=2; //modulo 2
