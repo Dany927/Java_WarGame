@@ -18,6 +18,8 @@ public class Unite
 		this.p_def = p_def;
 		this.depl = depl;
 		this.vision = vision;
+		//this.ligne=0;
+		//this.colonne=0;
 	}
 
 	public String getNom() { return this.nom; }
@@ -32,11 +34,23 @@ public class Unite
 
 	public int getVis() { return this.vision; }
 
-	public int setLigne(int value)
+	/*public int getLig() { return this.ligne; }
+
+	public int getCol() { return this.colonne; }
+
+	public int setLig(int value)
 	{
-		ligne+=value;
-		return ligne;
+		this.ligne=value;
+		return this.ligne;
 	}
+
+	public int setCol(int value)
+	{
+		this.colonne = value;
+		return this.colonne;
+	}*/
+
+	
 
   	/*
   	void Attaquer(Unite ennemie, double bonus_défense){

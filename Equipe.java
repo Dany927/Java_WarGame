@@ -7,7 +7,13 @@ public class Equipe
 	private ArrayList<Unite> liste_unite_equipe = new ArrayList<Unite>();
 	public ArrayList<Unite> getListeEquipe() { return liste_unite_equipe; }
 
-	void ajoutEquipe(ArrayList<Unite> liste)
+	Unite ajoutUnite(String nom, int pv, int p_att, int p_def, int depl,int vision)
+	{
+		Unite perso = new Unite(nom, pv, p_att, p_def, depl, vision);
+		return perso;
+	}
+
+	void ajoutEquipe(ArrayList<Unite> liste, int lig, int col)
 	{
 		int i;
 		int choix;
@@ -22,15 +28,29 @@ public class Equipe
 		//on demande a l'utilisateur de former son equipe
 		do
 		{
+
 			j+=1;
 			choix = selectionUniteEquipe(liste);
+			if (choix==0) //archer
+				this.liste_unite_equipe.add(ajoutUnite("Archer", 33, 6, 2, 5, 7));
+			else if(choix==1)
+				this.liste_unite_equipe.add(ajoutUnite("Infanterie", 28, 5, 3, 6, 4));
+			else if(choix==2)
+				this.liste_unite_equipe.add(ajoutUnite("Cavalerie", 38, 8, 3, 8, 6));
 
-			liste_unite_equipe.add(liste.get(choix));
 
 		}while(j!=nbr_max);
 
 		System.out.println("\nVoici donc votre equipe : ");
-		this.afficheCarac(liste_unite_equipe);
+		this.afficheCarac(this.liste_unite_equipe);
+
+		//Initialisation des positions des joueurs 
+		for (i=0;i<this.liste_unite_equipe.size();i++)
+		{
+			this.liste_unite_equipe.get(i).ligne = lig;
+			this.liste_unite_equipe.get(i).colonne = col;
+			col+=1;
+		}
 	}
 
 	void afficheCarac(ArrayList<Unite> liste_unite)

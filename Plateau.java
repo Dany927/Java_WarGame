@@ -78,10 +78,7 @@ public class Plateau
         int i,j;
         for (i=0;i<eq.getListeEquipe().size();i++)
         {
-            eq.getListeEquipe().get(i).ligne = ligne;
-            eq.getListeEquipe().get(i).colonne = colonne;
             this.setPosUnites(tour,ligne,colonne);
-
             colonne+=1;
         }
     }
@@ -121,6 +118,8 @@ public class Plateau
         Equipe equipe2 = new Equipe(); 
 
         GroupeUnite perso = new GroupeUnite();
+        GroupeUnite perso2 = new GroupeUnite();
+
         GroupeTerrain terrain = new GroupeTerrain();
 
         //ajout des personnages
@@ -137,9 +136,9 @@ public class Plateau
 
         //ajout des personnages créés aux équipes (choix des perso)
         System.out.println("Construction equipe 1 : ");
-        equipe1.ajoutEquipe(perso.getListeUnite());
+        equipe1.ajoutEquipe(perso.getListeUnite(), 0, 4);
         System.out.println("Construction equipe 2 : ");
-        equipe2.ajoutEquipe(perso.getListeUnite());
+        equipe2.ajoutEquipe(perso.getListeUnite(), 9, 4);
 
         terrain.afficheCaracTerrain();
 
