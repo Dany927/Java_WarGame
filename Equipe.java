@@ -223,6 +223,195 @@ public class Equipe
 	    
   	}
 
+  	boolean verifDeplacementPoss(int identifiant, GroupeTerrain terrain, Plateau plat)
+  	{
+  		boolean case_dispo1 = true;
+  		boolean case_dispo2 = true;
+  		boolean case_dispo3 = true;
+  		boolean case_dispo4 = true;
+  		boolean case_dispo5 = true;
+  		boolean case_dispo6 = true;
+  		boolean case_dispo7 = true;
+  		boolean case_dispo8 = true;
+
+  		int ligne = this.getListeEquipe().get(identifiant).ligne; //recuperer ligne du perso
+  		int colonne = this.getListeEquipe().get(identifiant).colonne; //recuperer colonne du perso
+
+
+
+  		int depl_perso = this.getListeEquipe().get(identifiant).getDepl();
+
+  		System.out.println("LIG : " + ligne + " / COL : " + colonne + " / DEPL_PERSO : " + depl_perso);
+  		//111
+  		//101
+  		//111
+  		//verifier toutes les positions autour du 0(perso)
+
+  		if(ligne!=0&&ligne!=9&&colonne!=0&&colonne!=9)
+  		{
+  			//en haut
+	  		if ( (depl_perso - terrain.getListeTerrain().get( plat.getCases()[ligne-1][colonne] ).getDeplTerrain() >= 0) )
+	  		{
+	  			System.out.println("Case dispo en haut en terme de deplacement, equipier?");
+	  			//PARTIE GRAPHIQUE , ajouter une surbrillance de la case montrant qu'on peut s'y deplacer
+	  			//verifier aussi dans la condition if qu'il n'y a pas un joueur de la mm equipe que nous
+	  			for (int i=0;i<this.getListeEquipe().size();i++)
+	  			{
+	  				/*System.out.println("\nTEST : HAUT");
+	  				System.out.println("LIG : " + this.getListeEquipe().get(i).ligne + " / COL : " + this.getListeEquipe().get(i).colonne);*/
+	  				if ( (this.getListeEquipe().get(i).ligne==ligne-1)&&(this.getListeEquipe().get(i).colonne==colonne))
+	  				{
+	  					System.out.println("!!!!!!!!Case non dispo en haut!!!!!!!!");
+	  					case_dispo1 = false; 
+	  				}
+	  			}
+	  			
+	  		}
+	  		else
+	  			case_dispo1 = false;
+	  		//en haut a droite
+	  		if ( (depl_perso - terrain.getListeTerrain().get( plat.getCases()[ligne-1][colonne+1] ).getDeplTerrain()) >= 0 )
+	  		{
+	  			System.out.println("Case dispo en haut a droite en terme de deplacement, equipier?");
+	  			for (int i=0;i<this.getListeEquipe().size();i++)
+	  			{
+	  				/*System.out.println("\nTEST : HAUT DROITE");
+	  				System.out.println("LIG : " + this.getListeEquipe().get(i).ligne + " / COL : " + this.getListeEquipe().get(i).colonne);*/
+	  				if ( (this.getListeEquipe().get(i).ligne==ligne-1)&&(this.getListeEquipe().get(i).colonne==colonne+1))
+	  				{
+	  					System.out.println("!!!!!!!!Case non dispo en haut a droite!!!!!!!!");
+	  					case_dispo2 = false; //il existe donc au moins une case libre
+	  				}
+	  			}
+	  			
+	  		}
+	  		else
+	  			case_dispo2 = false;
+	  		//en haut a gauche
+	  		if (  (depl_perso - terrain.getListeTerrain().get( plat.getCases()[ligne-1][colonne-1] ).getDeplTerrain()) >= 0 )
+	  		{
+	  			System.out.println("Case dispo en haut a gauche en terme de deplacement, equipier?");
+	  			for (int i=0;i<this.getListeEquipe().size();i++)
+	  			{
+	  				/*System.out.println("\nTEST : HAUT GAUCHE");
+	  				System.out.println("LIG : " + this.getListeEquipe().get(i).ligne + " / COL : " + this.getListeEquipe().get(i).colonne);*/
+	  				if ( (this.getListeEquipe().get(i).ligne==ligne-1)&&(this.getListeEquipe().get(i).colonne==colonne-1))
+	  				{
+	  					System.out.println("!!!!!!!!Case non dispo en haut a gauche!!!!!!!!");
+	  					case_dispo3 = false;
+	  				}
+	  			}
+
+	  			
+	  		}
+	  		else
+	  			case_dispo3 = false;
+	  		//a droite
+	  		if ( (depl_perso - terrain.getListeTerrain().get( plat.getCases()[ligne][colonne+1] ).getDeplTerrain()) >= 0)
+	  		{
+	  			System.out.println("Case dispo a droite en terme de deplacement, equipier?");
+	  			for (int i=0;i<this.getListeEquipe().size();i++)
+	  			{
+	  				/*System.out.println("\nTEST : DROITE");
+	  				System.out.println("LIG : " + this.getListeEquipe().get(i).ligne + " / COL : " + this.getListeEquipe().get(i).colonne);*/
+	  				if ( (this.getListeEquipe().get(i).ligne==ligne)&&(this.getListeEquipe().get(i).colonne==colonne+1))
+	  				{
+	  					System.out.println("!!!!!!!!Case non dispo a droite!!!!!!!!");
+	  					case_dispo4 = false;
+	  				}
+	  			}
+
+	  			
+	  		}
+	  		else
+	  			case_dispo4 = false;
+	  		//a gauche
+	  		if (  (depl_perso - terrain.getListeTerrain().get( plat.getCases()[ligne][colonne-1] ).getDeplTerrain()) >= 0 )
+	  		{
+	  			System.out.println("Case dispo a gauche en terme de deplacement, equipier?");
+	  			for (int i=0;i<this.getListeEquipe().size();i++)
+	  			{
+	  				/*System.out.println("\nTEST : GAUCHE");
+	  				System.out.println("LIG : " + this.getListeEquipe().get(i).ligne + " / COL : " + this.getListeEquipe().get(i).colonne);*/
+	  				if ( (this.getListeEquipe().get(i).ligne==ligne)&&(this.getListeEquipe().get(i).colonne==colonne-1))
+	  				{
+	  					System.out.println("!!!!!!!!Case non dispo a gauche!!!!!!!!");
+	  					case_dispo5 = false;
+	  				}
+	  			}
+	  			
+	  		}
+	  		else
+	  			case_dispo5 = false;
+	  		//en bas 
+	  		if (  (depl_perso - terrain.getListeTerrain().get( plat.getCases()[ligne+1][colonne] ).getDeplTerrain()) >= 0 )
+	  		{
+	  			System.out.println("Case dispo en bas en terme de deplacement, equipier?");
+	  			for (int i=0;i<this.getListeEquipe().size();i++)
+	  			{
+	  				/*System.out.println("\nTEST : BAS");
+	  				System.out.println("LIG : " + this.getListeEquipe().get(i).ligne + " / COL : " + this.getListeEquipe().get(i).colonne);*/
+	  				if ( (this.getListeEquipe().get(i).ligne==ligne+1)&&(this.getListeEquipe().get(i).colonne==colonne))
+	  				{
+	  					System.out.println("!!!!!!!!Case non dispo en bas!!!!!!!!");
+	  					case_dispo6 =  false;
+	  				}
+	  			}
+	  			
+	  		}
+	  		else
+	  			case_dispo6 = false;
+	  		//en bas a gauche
+	  		if (  (depl_perso - terrain.getListeTerrain().get( plat.getCases()[ligne+1][colonne-1] ).getDeplTerrain()) >= 0 )
+	  		{
+	  			System.out.println("Case dispo en bas a gauche en terme de deplacement, equipier?");
+	  			for (int i=0;i<this.getListeEquipe().size();i++)
+	  			{
+	  				/*System.out.println("\nTEST : BAS GAUCHE");
+	  				System.out.println("LIG : " + this.getListeEquipe().get(i).ligne + " / COL : " + this.getListeEquipe().get(i).colonne);*/
+	  				if ( (this.getListeEquipe().get(i).ligne==ligne+1)&&(this.getListeEquipe().get(i).colonne==colonne-1))
+	  				{
+	  					System.out.println("!!!!!!!!Case non dispo en bas a gauche!!!!!!!!");
+	  					case_dispo7 = false;
+	  				}
+	  			}
+	  			
+	  		}
+	  		else
+	  			case_dispo7 = false;
+	  		//en bas a droite
+	  		if (  (depl_perso - terrain.getListeTerrain().get( plat.getCases()[ligne+1][colonne+1] ).getDeplTerrain()) >= 0 )
+	  		{
+	  			System.out.println("Case dispo en bas a droite en terme de deplacement, equipier?");
+	  			for (int i=0;i<this.getListeEquipe().size();i++)
+	  			{
+	  				/*System.out.println("\nTEST : BAS DROITE");
+	  				System.out.println("LIG : " + this.getListeEquipe().get(i).ligne + " / COL : " + this.getListeEquipe().get(i).colonne);*/
+	  				if ( (this.getListeEquipe().get(i).ligne==ligne+1)&&(this.getListeEquipe().get(i).colonne==colonne+1))
+	  				{
+	  					System.out.println("!!!!!!!!Case non dispo en bas a droite!!!!!!!!"); 
+	  					case_dispo8 = false;
+	  				}
+	  			}
+	  			
+	  		}
+	  		else
+	  			case_dispo8 = false;
+
+	  		if ( (case_dispo1==false)&&(case_dispo2==false)&&(case_dispo3==false)&&(case_dispo4==false)&&(case_dispo5==false)&&(case_dispo6==false)&&(case_dispo7==false)&&(case_dispo8==false))
+	  		{
+	  			System.out.println("\nAUCUNE CASE DISPO, on passe son tour!\n");
+	  			return false;
+	  		}
+	  		else
+	  			return true;
+  		}
+  		else
+  			return true;
+
+
+  	}
+
 
 	void deplacer(Plateau plat, GroupeTerrain terrain, int tour, Equipe eq_adverse)
 	{
@@ -232,7 +421,8 @@ public class Equipe
 		int choix_lig, choix_col;
 		boolean occupe=false;
 		int cout_case;
-		int depl;
+		boolean case_dispo=true;
+		int depl_initial;
 
 		//afficher les joueurs de notre equipe pour pouvoir le selectionner
 		this.afficheCarac(this.getListeEquipe());
@@ -243,16 +433,26 @@ public class Equipe
 		}
 
 		identifiant = selectionUniteEquipe(this.getListeEquipe()); //on recupere l'identifiant du joueur qu'on joue
-		depl = this.getListeEquipe().get(identifiant).getDepl();   //on obtient son nombre de points de deplacement
+		//recuperer le nombre de deplacement du joueur et lorsqu'on sort de la boucle while on remet le nombre de deplacement a ca
+		depl_initial = this.getListeEquipe().get(identifiant).getDepl(); 
+
 
 		do
 		{
+
 			System.out.println("Pour passer votre tour, rester sur votre place (SAME puis SAME)\n");
 			//on sauvegarde la ligne / colonne precedente en cas de probleme et pour effacer dans la matrice
 			ligne_prec = this.getListeEquipe().get(identifiant).ligne; 
 			colonne_prec = this.getListeEquipe().get(identifiant).colonne; 
 
-			System.out.println("Vous avez " + depl + " points de deplacements restants");
+			
+			System.out.println("Vous avez " + this.getListeEquipe().get(identifiant).getDepl() + " points de deplacements restants");
+			
+			case_dispo = verifDeplacementPoss(identifiant,terrain,plat);
+
+			if (case_dispo==false)
+				return; //on passe son tour car pas de case dispo
+
 			choix_lig = verifProchaineLig(identifiant);	//verif si on sort du tableau ou non niveau ligne
 			choix_col = verifProchaineCol(identifiant);  //verif si on sort du tableau ou non niveau colonne
 			occupe = verifProchaineCase(identifiant, plat); //verif si la prochaine case est occupe
@@ -265,12 +465,12 @@ public class Equipe
 			System.out.println(" / Coord : " + this.getListeEquipe().get(identifiant).ligne + " " + this.getListeEquipe().get(identifiant).colonne);
 			
 
-			if (depl-cout_case<0||occupe==true) //si probleme sur la prochaine ligne ou prochaine colonne, rester sur place
+			if (this.getListeEquipe().get(identifiant).getDepl()-cout_case<0||occupe==true) //si probleme sur la prochaine ligne ou prochaine colonne, rester sur place
 			{
 				//si on a decide de rester sur place, on passe son tour
 				if (choix_lig==3&&choix_col==3)
 				{
-					System.out.println("\nIl vous restait " + depl + " points de deplacements restants");
+					System.out.println("\nIl vous restait " + this.getListeEquipe().get(identifiant).getDepl() + " points de deplacements restants");
 					System.out.println("Vous avez passe votre tour!\n");
 					return;
 				}
@@ -285,7 +485,7 @@ public class Equipe
 							System.out.println("On attaque l'equipe 2!");
 							this.attaquer(identifiant,plat,terrain,eq_adverse, ligne_prec, colonne_prec);
 							//on a attaque, du coup c'est au tour de l'autre equipe de jouer
-							depl -= cout_case; //calculer le nouveau cout de deplacement
+							this.getListeEquipe().get(identifiant).setDeplEnlever(cout_case); //calculer le nouveau cout de deplacement
 						}
 					}
 					else if (tour==2)
@@ -295,7 +495,7 @@ public class Equipe
 							System.out.println("On attaque l'equipe 1!");
 							this.attaquer(identifiant,plat,terrain,eq_adverse, ligne_prec, colonne_prec);
 							//on a attaque, du coup c'est au tour de l'autre equipe de jouer
-							depl -= cout_case; //calculer le nouveau cout de deplacement
+							this.getListeEquipe().get(identifiant).setDeplEnlever(cout_case); //calculer le nouveau cout de deplacement
 						}
 					}
 					
@@ -309,13 +509,15 @@ public class Equipe
 			{
 				plat.effacerPosUnites(ligne_prec,colonne_prec); //effacer case precdente
 				plat.setPosUnites(tour,this.getListeEquipe().get(identifiant).ligne,this.getListeEquipe().get(identifiant).colonne); //afficher nouvelle pos
-				depl -= cout_case; //calculer le nouveau cout de deplacement
+				this.getListeEquipe().get(identifiant).setDeplEnlever(cout_case);//calculer le nouveau cout de deplacement
 				plat.affichagePlateau(); //afficher la nouvelle matrice
 			}
 			
 
-		}while(depl > 0);
+		}while(this.getListeEquipe().get(identifiant).getDepl() > 0);
 
+		//remettre le bon nombre de deplacement 
+		this.getListeEquipe().get(identifiant).setDeplInitialiser(depl_initial);
   	}
 
 	

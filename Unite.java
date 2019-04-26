@@ -36,6 +36,18 @@ public class Unite
 
 	public int getDepl() { return this.depl; }
 
+	public int setDeplEnlever(int value)
+	{
+		this.depl-=value;
+		return this.depl;
+	}
+
+	public int setDeplInitialiser(int value)
+	{
+		this.depl=value;
+		return this.depl;
+	}
+
 	public int getVis() { return this.vision; }
 	
 
