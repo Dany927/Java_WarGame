@@ -253,8 +253,7 @@ public class Equipe
 	  		if ( (depl_perso - terrain.getListeTerrain().get( plat.getCases()[ligne-1][colonne] ).getDeplTerrain() >= 0) )
 	  		{
 	  			System.out.println("Case dispo en haut en terme de deplacement, equipier?");
-	  			//PARTIE GRAPHIQUE , ajouter une surbrillance de la case montrant qu'on peut s'y deplacer
-	  			//verifier aussi dans la condition if qu'il n'y a pas un joueur de la mm equipe que nous
+	  			
 	  			for (int i=0;i<this.getListeEquipe().size();i++)
 	  			{
 	  				/*System.out.println("\nTEST : HAUT");
@@ -264,6 +263,11 @@ public class Equipe
 	  					System.out.println("!!!!!!!!Case non dispo en haut!!!!!!!!");
 	  					case_dispo1 = false; 
 	  				}
+	  			}
+
+	  			if (case_dispo1==true)
+	  			{
+	  				//PARTIE GRAPHIQUE , ajouter une surbrillance de la case montrant qu'on peut s'y deplacer
 	  			}
 	  			
 	  		}
@@ -283,6 +287,11 @@ public class Equipe
 	  					case_dispo2 = false; //il existe donc au moins une case libre
 	  				}
 	  			}
+
+	  			if (case_dispo2==true)
+	  			{
+	  				//PARTIE GRAPHIQUE , ajouter une surbrillance de la case montrant qu'on peut s'y deplacer
+	  			}
 	  			
 	  		}
 	  		else
@@ -300,6 +309,11 @@ public class Equipe
 	  					System.out.println("!!!!!!!!Case non dispo en haut a gauche!!!!!!!!");
 	  					case_dispo3 = false;
 	  				}
+	  			}
+
+	  			if (case_dispo3==true)
+	  			{
+	  				//PARTIE GRAPHIQUE , ajouter une surbrillance de la case montrant qu'on peut s'y deplacer
 	  			}
 
 	  			
@@ -321,6 +335,11 @@ public class Equipe
 	  				}
 	  			}
 
+	  			if (case_dispo4==true)
+	  			{
+	  				//PARTIE GRAPHIQUE , ajouter une surbrillance de la case montrant qu'on peut s'y deplacer
+	  			}
+
 	  			
 	  		}
 	  		else
@@ -338,6 +357,11 @@ public class Equipe
 	  					System.out.println("!!!!!!!!Case non dispo a gauche!!!!!!!!");
 	  					case_dispo5 = false;
 	  				}
+	  			}
+
+	  			if (case_dispo5==true)
+	  			{
+	  				//PARTIE GRAPHIQUE , ajouter une surbrillance de la case montrant qu'on peut s'y deplacer
 	  			}
 	  			
 	  		}
@@ -357,6 +381,11 @@ public class Equipe
 	  					case_dispo6 =  false;
 	  				}
 	  			}
+
+	  			if (case_dispo6==true)
+	  			{
+	  				//PARTIE GRAPHIQUE , ajouter une surbrillance de la case montrant qu'on peut s'y deplacer
+	  			}
 	  			
 	  		}
 	  		else
@@ -375,6 +404,11 @@ public class Equipe
 	  					case_dispo7 = false;
 	  				}
 	  			}
+
+	  			if (case_dispo7==true)
+	  			{
+	  				//PARTIE GRAPHIQUE , ajouter une surbrillance de la case montrant qu'on peut s'y deplacer
+	  			}
 	  			
 	  		}
 	  		else
@@ -392,6 +426,11 @@ public class Equipe
 	  					System.out.println("!!!!!!!!Case non dispo en bas a droite!!!!!!!!"); 
 	  					case_dispo8 = false;
 	  				}
+	  			}
+
+	  			if (case_dispo8==true)
+	  			{
+	  				//PARTIE GRAPHIQUE , ajouter une surbrillance de la case montrant qu'on peut s'y deplacer
 	  			}
 	  			
 	  		}
