@@ -255,7 +255,7 @@ public class Equipe
 	    
   	}
 
-  	boolean verifDeplacementPoss(int identifiant, GroupeTerrain terrain, Plateau plat)
+  	boolean verifDeplPoss(int identifiant, GroupeTerrain terrain, Plateau plat)
   	{
   		boolean case_dispo1 = true; //en haut a gauche
   		boolean case_dispo2 = true; //en haut a droite
@@ -555,7 +555,7 @@ public class Equipe
 			
 			System.out.println("Vous avez " + this.getListeEquipe().get(identifiant).getDepl() + " points de deplacements restants");
 			
-			case_dispo = verifDeplacementPoss(identifiant,terrain,plat);
+			case_dispo = verifDeplPoss(identifiant,terrain,plat);
 
 			if (case_dispo==false)
 			{

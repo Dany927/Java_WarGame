@@ -51,22 +51,4 @@ public class Unite
 	public int getVis() { return this.vision; }
 	
 
-  	/*
-  	void Attaquer(Unite ennemie, double bonus_défense){
-    int PD=ennemie.Défense;
-    int Dbrut=0;
-    int D=0;
-
-    PD=(int)(PD*(1.0d+bonus_défense));
-    Dbrut=this.Attaque-PD;
-    D=Dbrut+(int)(-0.5*this.Attaque+Math.random()*(0.5*this.Attaque));
-    if(D>=0)
-      ennemie.PV-=D;
-    else
-      ennemie.PV+=D;
-    if(ennemie.PV<0)
-      ennemie.PV=0;
-  }*/
-
-
 }
