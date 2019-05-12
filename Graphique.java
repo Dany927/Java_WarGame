@@ -17,7 +17,8 @@ public class Graphique extends JPanel {
 	private final int side;
 	private Point mousePosition;
 	private int number;
-	private Image image_mer, image_chateau,image_sand, todd, todd2;
+	private Image image_village, image_mer, image_chateau, image_foret, image_sable, image_rocher;
+	private Image todd;
 	Image[][] tableauImg = new Image[10][10];
 	private Plateau plat;
 
@@ -47,11 +48,14 @@ public class Graphique extends JPanel {
 		addMouseListener(mouseHandler);
 
 		try {
+			image_village = ImageIO.read(new File("./ImagePlateau/village.png"));
+			image_chateau = ImageIO.read(new File("./ImagePlateau/forteresse.png"));
+			image_foret  = ImageIO.read(new File("./ImagePlateau/foret.png"));
             image_mer = ImageIO.read(new File("./ImagePlateau/mer.png"));
-            image_chateau = ImageIO.read(new File("./ImagePlateau/medieval_openCastle.png"));
-            image_sand  = ImageIO.read(new File("./ImagePlateau/dirt_06.png"));
+            image_sable  = ImageIO.read(new File("./ImagePlateau/sable.png"));
+            image_rocher  = ImageIO.read(new File("./ImagePlateau/rocher.png"));
+
             todd = ImageIO.read(new File("./ImagePlateau/todd.png"));
-            todd2 = ImageIO.read(new File("./ImagePlateau/stone_16.png"));
         } catch (IOException exc) {
             exc.printStackTrace();
         }
@@ -86,17 +90,23 @@ public class Graphique extends JPanel {
                 g2d.draw(hexagon);
 
                 if (plat.getCases()[row][column]==0) //village
-                    tableauImg[row][column] = image_mer;
+                    tableauImg[row][column] = image_village;
                 else if (plat.getCases()[row][column]==1) //forteresse
                     tableauImg[row][column] = image_chateau;
                 else if (plat.getCases()[row][column]==2) // foret
-                    tableauImg[row][column] = image_sand;
+                    tableauImg[row][column] = image_foret;
+                else if (plat.getCases()[row][column]==3) // mer
+                    tableauImg[row][column] = image_mer;
+                else if (plat.getCases()[row][column]==4) // sable
+                    tableauImg[row][column] = image_sable;
+                else if (plat.getCases()[row][column]==5) // rocher
+                    tableauImg[row][column] = image_rocher;
 
                 
                 if (plat.getPosUnites()[row][column]==1)
                     tableauImg[row][column] = todd;
                 else if (plat.getPosUnites()[row][column]==2)
-                    tableauImg[row][column] = todd2;
+                    tableauImg[row][column] = todd;
                 
                 g2d.drawImage(tableauImg[row][column],(int)(hexagon.getBounds().x),
                         (int) (hexagon.getBounds().y), 60, 70, this);
@@ -105,7 +115,7 @@ public class Graphique extends JPanel {
 
         }
         
-        for (int row = 1; row < 10; row += 2) {
+       for (int row = 1; row < 10; row += 2) {
             for (int column = 0; column < 10; column++) {
                 getHexagon(column * dimension.width + dimension.width / 2, (int) (row * side * 1.5 + 0.5));
                 if (mousePosition != null && hexagon.contains(mousePosition)) {
@@ -117,18 +127,23 @@ public class Graphique extends JPanel {
                 
 
                 if (plat.getCases()[row][column]==0) //village
-                    tableauImg[row][column] = image_mer;
+                    tableauImg[row][column] = image_village;
                 else if (plat.getCases()[row][column]==1) //forteresse
                     tableauImg[row][column] = image_chateau;
                 else if (plat.getCases()[row][column]==2) // foret
-                    tableauImg[row][column] = image_sand;
+                    tableauImg[row][column] = image_foret;
+                else if (plat.getCases()[row][column]==3) // mer
+                    tableauImg[row][column] = image_mer;
+                else if (plat.getCases()[row][column]==4) // sable
+                    tableauImg[row][column] = image_sable;
+                else if (plat.getCases()[row][column]==5) // rocher
+                    tableauImg[row][column] = image_rocher;
 
+                
                 if (plat.getPosUnites()[row][column]==1)
                     tableauImg[row][column] = todd;
                 else if (plat.getPosUnites()[row][column]==2)
-                    tableauImg[row][column] = todd2;
-
-                //this.repaint();
+                    tableauImg[row][column] = todd;
                 
 
                 g2d.drawImage(tableauImg[row][column],(int)(hexagon.getBounds().x),

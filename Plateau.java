@@ -29,16 +29,19 @@ public class Plateau
     // le type 0 correspond à un village
     // le type 1 correspond à une forteresse
     // le type 2 correspond à une foret
-    private int cases[][] = { {1,1,1,1,1,1,1,1,1,1},
+    // le type 3 correspond à une mer
+    // le type 4 correspond au sable
+    // le type 5 correspond au rocher                              
+    private int cases[][] = { {0,0,5,0,0,0,5,0,0,0},
                               {1,0,0,0,1,0,0,0,0,0},
-                              {1,0,0,0,0,0,0,0,2,2},
-                              {1,0,0,0,0,0,0,0,2,2},
-                              {1,0,0,0,0,0,0,0,2,2},
-                              {1,0,0,0,0,0,0,0,0,0},
-                              {1,0,0,0,0,0,0,0,0,0},
-                              {1,0,0,0,0,0,0,0,1,1},
-                              {1,0,0,0,0,0,0,0,0,0},
-                              {1,0,0,1,0,0,0,0,0,0} };
+                              {2,2,2,2,0,0,0,0,2,2},
+                              {1,0,0,2,2,0,5,0,2,2},
+                              {1,0,0,0,2,2,2,2,2,2},
+                              {4,4,4,4,4,5,5,1,2,2},
+                              {3,3,3,3,3,3,5,0,0,0},
+                              {3,3,3,3,3,3,5,0,0,0},
+                              {4,4,4,4,4,3,5,0,0,0},
+                              {1,0,0,0,1,3,5,0,1,0} };
                 
 
     private int pos_unites[][] = { {0,0,0,0,0,0,0,0,0,0},
@@ -97,20 +100,43 @@ public class Plateau
         // Affichage de la matrice
         for(int i = 0; i < this.getCases().length; i++)
         {
-            //affiche les colonnes de la matrice du plateau
-            for(int j = 0; j < this.getCases()[i].length; j++)
-            {
-                System.out.print(this.getCases()[i][j] + " ");
-            }
-            System.out.print("|| ");
+        	if (i%2==0) //pair
+        	{
+        		//affiche les colonnes de la matrice du plateau
+	            for(int j = 0; j < this.getCases()[i].length; j++)
+	            {
+	                System.out.print(this.getCases()[i][j] + " ");
+	            }
+	            System.out.print("  || ");
 
-            //affiche les colonens de la matrice des positions des unites
-            //meme nombre de ligne donc on recommence seulement les colonnes
-            for (int j = 0 ; j < this.getPosUnites().length ; j++)
-            {
-                System.out.print(this.getPosUnites()[i][j] + " ");
-            }
-            System.out.println();
+	            //affiche les colonnes de la matrice des positions des unites
+	            //meme nombre de ligne donc on recommence seulement les colonnes
+	            for (int j = 0 ; j < this.getPosUnites().length ; j++)
+	            {
+	                System.out.print(this.getPosUnites()[i][j] + " ");
+	            }
+	            System.out.println();
+        	}
+        	else
+        	{
+        		System.out.print(" ");
+        		//affiche les colonnes de la matrice du plateau
+	            for(int j = 0; j < this.getCases()[i].length; j++)
+	            {
+	                System.out.print(this.getCases()[i][j] + " ");
+	            }
+	            System.out.print(" ||   ");
+
+	            //affiche les colonnes de la matrice des positions des unites
+	            //meme nombre de ligne donc on recommence seulement les colonnes
+	            for (int j = 0 ; j < this.getPosUnites().length ; j++)
+	            {
+	                System.out.print(this.getPosUnites()[i][j] + " ");
+	            }
+	            System.out.println();
+        	}
+
+            
         }
         System.out.println();
         graph.repaint();
@@ -124,8 +150,8 @@ public class Plateau
   
         int ligne_debut_eq1 = 0;
         int ligne_debut_eq2 = 9;
-        int colonne_debut_eq1 = 4;
-        int colonne_debut_eq2 = 4;
+        int colonne_debut_eq1 = 2;
+        int colonne_debut_eq2 = 2;
         int tour_de_jeu=0; //equipe1 qui commence (1 pour equipe2)
         Plateau plat = new Plateau();       
 
@@ -136,7 +162,7 @@ public class Plateau
                 JFrame f = new JFrame("WarGame");
                 f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 f.add(new Graphique(plat, 35)); // Crée une liste d'hexagones
-                f.setSize(650, 600);
+                f.setSize(650, 650);
                 f.setLocationRelativeTo(null);
                 f.setVisible(true);
             }
@@ -155,15 +181,20 @@ public class Plateau
 
         //ajout des personnages
         //String nom, int pv, int p_att, int p_def, int depl,int vision
-        perso.ajoutUnite("Archer", 33, 6, 2, 5, 7);
         perso.ajoutUnite("Infanterie", 28, 5, 3, 6, 4);
+        perso.ajoutUnite("Archer", 33, 6, 2, 5, 7);
+        perso.ajoutUnite("Mage", 21, 5, 1, 5, 5);
         perso.ajoutUnite("Cavalerie", 38, 8, 3, 8, 6);
+        perso.ajoutUnite("Infanterie Lourde", 38, 10, 10, 4, 4);
 
         //ajout des terrains
         //String nom, int depl, double bonus_def
         terrain.ajoutTerrain("Village", 1, 0.40);
-        terrain.ajoutTerrain("Forteresse", 4, 0.60);
+        terrain.ajoutTerrain("Forteresse", 3, 0.60);
         terrain.ajoutTerrain("Foret", 2, 0.40);
+        terrain.ajoutTerrain("Mer", 4, 0.5);
+        terrain.ajoutTerrain("Sable", 2, 0.2);
+        terrain.ajoutTerrain("Rocher", 1, 0.6);
 
         //ajout des personnages créés aux équipes (choix des perso)
         System.out.println("Construction equipe 1 : ");
