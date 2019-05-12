@@ -452,7 +452,7 @@ public class Equipe
   	}
 
 
-	void deplacer(Plateau plat, GroupeTerrain terrain, int tour, Equipe eq_adverse)
+	void deplacer(Graphique graph, Plateau plat, GroupeTerrain terrain, int tour, Equipe eq_adverse)
 	{
 		int identifiant;
 		Scanner sc = new Scanner(System.in);
@@ -549,7 +549,7 @@ public class Equipe
 				plat.effacerPosUnites(ligne_prec,colonne_prec); //effacer case precdente
 				plat.setPosUnites(tour,this.getListeEquipe().get(identifiant).ligne,this.getListeEquipe().get(identifiant).colonne); //afficher nouvelle pos
 				this.getListeEquipe().get(identifiant).setDeplEnlever(cout_case);//calculer le nouveau cout de deplacement
-				plat.affichagePlateau(); //afficher la nouvelle matrice
+				plat.affichagePlateau(graph); //afficher la nouvelle matrice
 			}
 			
 

@@ -14,15 +14,15 @@ public class Graphique extends JPanel {
 	private final BasicStroke bs3 = new BasicStroke(2);// Idem
 	private final Point focusedHexagonLocation = new Point();
 	private final Dimension dimension;
-	private final int ligne, colonne, side;
+	private final int side;
 	private Point mousePosition;
 	private int number;
-	private Image image_mer, image_chateau,image_sand;
+	private Image image_mer, image_chateau,image_sand, todd, todd2;
 	Image[][] tableauImg = new Image[10][10];
+	private Plateau plat;
 
-	public Graphique(final int ligne, final int colonne, final int side) {
-		this.ligne = ligne;
-		this.colonne = colonne;
+	public Graphique(Plateau _plat, final int side) {
+		plat = _plat;
 		this.side = side;
 		dimension = getHexagon(0, 0).getBounds().getSize();
 		System.out.println(dimension);
@@ -47,12 +47,14 @@ public class Graphique extends JPanel {
 		addMouseListener(mouseHandler);
 
 		try {
-			image_mer = ImageIO.read(new File("./ImagePlateau/mer.png"));
-			image_chateau = ImageIO.read(new File("./ImagePlateau/medieval_openCastle.png"));
-			image_sand  = ImageIO.read(new File("./ImagePlateau/dirt_06.png"));
-		} catch (IOException exc) {
-			exc.printStackTrace();
-		}
+            image_mer = ImageIO.read(new File("./ImagePlateau/mer.png"));
+            image_chateau = ImageIO.read(new File("./ImagePlateau/medieval_openCastle.png"));
+            image_sand  = ImageIO.read(new File("./ImagePlateau/dirt_06.png"));
+            todd = ImageIO.read(new File("./ImagePlateau/todd.png"));
+            todd2 = ImageIO.read(new File("./ImagePlateau/stone_16.png"));
+        } catch (IOException exc) {
+            exc.printStackTrace();
+        }
 
 	}
 
@@ -70,42 +72,71 @@ public class Graphique extends JPanel {
 		
 	
 
-		for (int row = 0; row < ligne; row += 2) {
-			for (int column = 0; column < colonne; column++) {
+		for (int row = 0; row < 10; row += 2) {
+            for (int column = 0; column < 10; column++) {
 
-				getHexagon(column * dimension.width, (int) (row * side * 1.5));
-				if (mousePosition != null && hexagon.contains(mousePosition)) {
-					focusedHexagonLocation.x = column * dimension.width;
-					focusedHexagonLocation.y = (int) (row * side * 1.5);
-					number = row * colonne + column;
-				}
-				
-				
-				g2d.draw(hexagon);
-				tableauImg[row][column] = image_sand;
-				g2d.drawImage(tableauImg[row][column],(int)(hexagon.getBounds().x),
+                getHexagon(column * dimension.width, (int) (row * side * 1.5));
+                if (mousePosition != null && hexagon.contains(mousePosition)) {
+                    focusedHexagonLocation.x = column * dimension.width;
+                    focusedHexagonLocation.y = (int) (row * side * 1.5);
+                    number = row * 10 + column;
+                }
+                
+                
+                g2d.draw(hexagon);
+
+                if (plat.getCases()[row][column]==0) //village
+                    tableauImg[row][column] = image_mer;
+                else if (plat.getCases()[row][column]==1) //forteresse
+                    tableauImg[row][column] = image_chateau;
+                else if (plat.getCases()[row][column]==2) // foret
+                    tableauImg[row][column] = image_sand;
+
+                
+                if (plat.getPosUnites()[row][column]==1)
+                    tableauImg[row][column] = todd;
+                else if (plat.getPosUnites()[row][column]==2)
+                    tableauImg[row][column] = todd2;
+                
+                g2d.drawImage(tableauImg[row][column],(int)(hexagon.getBounds().x),
                         (int) (hexagon.getBounds().y), 60, 70, this);
 
-			}
+            }
 
-		}
-		
-		for (int row = 1; row < ligne; row += 2) {
-			for (int column = 0; column < colonne; column++) {
-				getHexagon(column * dimension.width + dimension.width / 2, (int) (row * side * 1.5 + 0.5));
-				if (mousePosition != null && hexagon.contains(mousePosition)) {
-					focusedHexagonLocation.x = column * dimension.width + dimension.width / 2;
-					focusedHexagonLocation.y = (int) (row * side * 1.5 + 0.5);
-					number = row * colonne + column;
-				}
-				g2d.draw(hexagon);
-				tableauImg[row][column] = image_chateau;
-				g2d.drawImage(tableauImg[row][column],(int)(hexagon.getBounds().x),
+        }
+        
+        for (int row = 1; row < 10; row += 2) {
+            for (int column = 0; column < 10; column++) {
+                getHexagon(column * dimension.width + dimension.width / 2, (int) (row * side * 1.5 + 0.5));
+                if (mousePosition != null && hexagon.contains(mousePosition)) {
+                    focusedHexagonLocation.x = column * dimension.width + dimension.width / 2;
+                    focusedHexagonLocation.y = (int) (row * side * 1.5 + 0.5);
+                    number = row * 10 + column;
+                }
+                g2d.draw(hexagon);
+                
+
+                if (plat.getCases()[row][column]==0) //village
+                    tableauImg[row][column] = image_mer;
+                else if (plat.getCases()[row][column]==1) //forteresse
+                    tableauImg[row][column] = image_chateau;
+                else if (plat.getCases()[row][column]==2) // foret
+                    tableauImg[row][column] = image_sand;
+
+                if (plat.getPosUnites()[row][column]==1)
+                    tableauImg[row][column] = todd;
+                else if (plat.getPosUnites()[row][column]==2)
+                    tableauImg[row][column] = todd2;
+
+                //this.repaint();
+                
+
+                g2d.drawImage(tableauImg[row][column],(int)(hexagon.getBounds().x),
                         (int) (hexagon.getBounds().y), 60, 70, this);
 
-				// g2d.drawImage(image1,0,0,60, 70, this);
-			}
-		}
+                // g2d.drawImage(image1,0,0,60, 70, this);
+            }
+        }
 		
 		
 
@@ -129,21 +160,6 @@ public class Graphique extends JPanel {
 		hexagon.addPoint(x + w, y + 2 * side);
 		hexagon.addPoint(x, y + (int) (1.5 * side));
 		return hexagon;
-	}
-
-	public static void main(final String[] args) {
-		Runnable gui = new Runnable() {
-			public void run() {
-				JFrame f = new JFrame("WarGame");
-				f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-				f.add(new Plateau(10, 10, 35)); // Crée une liste d'hexagones
-				f.setSize(650, 600);
-				f.setLocationRelativeTo(null);
-				f.setVisible(true);
-			}
-		};
-		// GUI must start on EventDispatchThread:
-		SwingUtilities.invokeLater(gui);
 	}
 
 }
