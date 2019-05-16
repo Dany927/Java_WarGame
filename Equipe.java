@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.Random;
 
 public class Equipe
 {
@@ -30,7 +31,7 @@ public class Equipe
 		{
 			j+=1;
 			choix = selectionUniteEquipe(liste);
-			if (choix==0) //archer
+			if (choix==0) 
 				this.liste_unite_equipe.add(ajoutUnite("Infanterie", 28, 5, 3, 6, 4));
 			else if(choix==1)
 				this.liste_unite_equipe.add(ajoutUnite("Archer", 33, 6, 2, 5, 7));
@@ -214,6 +215,8 @@ public class Equipe
 		double bonus_défense_lieu;
 		int degat;
 		int i_ennemie;
+		Random r = new Random();
+		int coup_critique;
 
 		attaque = this.getListeEquipe().get(identifiant).getPAtt();
 		bonus_défense_lieu = terrain.getListeTerrain().get( plat.getCases()[this.getListeEquipe().get(identifiant).ligne][this.getListeEquipe().get(identifiant).colonne] ).getBonusDef();
@@ -230,6 +233,14 @@ public class Equipe
 		System.out.println("Apres bonus defense lieu, point def ennemie : " + defense_ennemie);
 		System.out.println("Degat inflige : " + degat);
 
+		//creer un chiffre aleatoire entre -0.5*degat et +0.5*degat
+		coup_critique = (int) (-0.5 * degat) + r.nextInt((int) (0.5 * degat - (-0.5 * degat )));
+
+		System.out.println("Random : " + coup_critique);
+
+		degat += coup_critique;
+		
+		System.out.println("Degat apres random : " + degat); 
 		if (degat>0)
 		{
 			eq_adverse.getListeEquipe().get(i_ennemie).setPV(degat); //enlever ses pv de - degat
