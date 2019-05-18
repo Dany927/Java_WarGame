@@ -155,27 +155,13 @@ public class Plateau
         int tour_de_jeu=0; //equipe1 qui commence (1 pour equipe2)
         Plateau plat = new Plateau();       
 
-        Graphique graph = new Graphique(plat, 35);
-
-        Runnable gui = new Runnable() {
-            public void run() {
-                JFrame f = new JFrame("WarGame");
-                f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                f.add(new Graphique(plat, 35)); // Crée une liste d'hexagones
-                f.setSize(650, 650);
-                f.setLocationRelativeTo(null);
-                f.setVisible(true);
-            }
-        };
-        // GUI must start on EventDispatchThread:
-        SwingUtilities.invokeLater(gui);
-
         //deux equipes
         Equipe equipe1 = new Equipe();
         Equipe equipe2 = new Equipe(); 
 
+        
+
         GroupeUnite perso = new GroupeUnite();
-        GroupeUnite perso2 = new GroupeUnite();
 
         GroupeTerrain terrain = new GroupeTerrain();
 
@@ -201,6 +187,21 @@ public class Plateau
         equipe1.ajoutEquipe(perso.getListeUnite(), ligne_debut_eq1, colonne_debut_eq1);
         System.out.println("Construction equipe 2 : ");
         equipe2.ajoutEquipe(perso.getListeUnite(), ligne_debut_eq2, colonne_debut_eq2);
+
+        Graphique graph = new Graphique(plat, equipe1, equipe2, 35);
+
+        Runnable gui = new Runnable() {
+            public void run() {
+                JFrame f = new JFrame("WarGame");
+                f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                f.add(new Graphique(plat, equipe1, equipe2, 35)); // Crée une liste d'hexagones
+                f.setSize(650, 650);
+                f.setLocationRelativeTo(null);
+                f.setVisible(true);
+            }
+        };
+        // GUI must start on EventDispatchThread:
+        SwingUtilities.invokeLater(gui);
 
         terrain.afficheCaracTerrain();
 
