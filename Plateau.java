@@ -1,6 +1,7 @@
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Scanner;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -146,24 +147,37 @@ public class Plateau
 
     public static void main(String[] args)
     {
-        
   
         int ligne_debut_eq1 = 0;
         int ligne_debut_eq2 = 9;
         int colonne_debut_eq1 = 2;
         int colonne_debut_eq2 = 2;
         int tour_de_jeu=0; //equipe1 qui commence (1 pour equipe2)
+
+        int ia1=0;
+        int ia2=0;
+
+        Scanner sc = new Scanner(System.in);
+
         Plateau plat = new Plateau();       
 
         //deux equipes
         Equipe equipe1 = new Equipe();
         Equipe equipe2 = new Equipe(); 
 
-        
-
         GroupeUnite perso = new GroupeUnite();
 
         GroupeTerrain terrain = new GroupeTerrain();
+
+        System.out.println("Equipe1 : ");
+        System.out.println("Voulez-vous être une IA ? Si oui, tapez 1 sinon un  autre numéro");
+        System.out.print("Choix : ");
+        ia1 = sc.nextInt();
+
+        System.out.println("Equipe2 : ");
+        System.out.println("Voulez-vous être une IA ? Si oui, tapez 1 sinon un  autre numéro");
+        System.out.print("Choix : ");
+        ia2 = sc.nextInt();
 
         //ajout des personnages
         //String nom, int pv, int p_att, int p_def, int depl,int vision
@@ -184,9 +198,9 @@ public class Plateau
 
         //ajout des personnages créés aux équipes (choix des perso)
         System.out.println("Construction equipe 1 : ");
-        equipe1.ajoutEquipe(perso.getListeUnite(), ligne_debut_eq1, colonne_debut_eq1);
+        equipe1.ajoutEquipe(perso.getListeUnite(), ia1, ligne_debut_eq1, colonne_debut_eq1);
         System.out.println("Construction equipe 2 : ");
-        equipe2.ajoutEquipe(perso.getListeUnite(), ligne_debut_eq2, colonne_debut_eq2);
+        equipe2.ajoutEquipe(perso.getListeUnite(), ia2, ligne_debut_eq2, colonne_debut_eq2);
 
         Graphique graph = new Graphique(plat, equipe1, equipe2, 35);
 
@@ -218,11 +232,11 @@ public class Plateau
             System.out.println("\nTour de l'equipe " + (tour_de_jeu+1));
             if (tour_de_jeu==0)
             {
-                equipe1.deplacer(graph, plat, terrain, 1, equipe2);
+                equipe1.deplacer(ia1, graph, plat, terrain, 1, equipe2);
             }
             else
             {
-                equipe2.deplacer(graph, plat, terrain, 2, equipe1);
+                equipe2.deplacer(ia2 ,graph, plat, terrain, 2, equipe1);
             }
             tour_de_jeu+=1;
             tour_de_jeu%=2; //modulo 2

@@ -14,13 +14,15 @@ public class Equipe
 		return perso;
 	}
 
-	void ajoutEquipe(ArrayList<Unite> liste, int lig, int col)
+	void ajoutEquipe(ArrayList<Unite> liste, int ia, int lig, int col)
 	{
 		int i;
 		int choix;
 		int j=0;
 		int nbr_max=6;
 		Scanner sc = new Scanner(System.in);
+
+		Random r = new Random();
 
 		//affiche tout les personnages disponibles
 		this.afficheCarac(liste);
@@ -30,7 +32,13 @@ public class Equipe
 		do
 		{
 			j+=1;
-			choix = selectionUniteEquipe(liste);
+			if (ia!=1)
+				choix = selectionUniteEquipe(liste);
+			else
+			{
+				choix = r.nextInt(5); //random compris entre 0 inclus et 5 exclus, soit [0,4]
+				System.out.println("Choix de l'ia : " + choix);
+			}
 			if (choix==0) 
 				this.liste_unite_equipe.add(ajoutUnite("Infanterie", 28, 5, 3, 6, 4));
 			else if(choix==1)
@@ -84,28 +92,51 @@ public class Equipe
 		return choix;
 	}
 
-	int verifProchaineCol(int vertical, int identifiant)
+	int verifProchaineCol(int ia, int vertical, int identifiant)
 	{
 		int choix=0;
 		Scanner sc = new Scanner(System.in);
+		Random r = new Random();
+
+
 
 		if (vertical==1||vertical==2) //UP ou DOWN, donc on a le droit d'aller que a droite ou gauche
 		{
-			System.out.println("Coord : [" + this.getListeEquipe().get(identifiant).ligne + "][" + this.getListeEquipe().get(identifiant).colonne + "] / 1) Right 2) Left "); //colonne
-			do
+			if (ia!=1)
 			{
-				System.out.print("Choix : ");
-		    	choix=sc.nextInt();
-			}while(choix!=1&&choix!=2);
+				System.out.println("Coord : [" + this.getListeEquipe().get(identifiant).ligne + "][" + this.getListeEquipe().get(identifiant).colonne + "] / 1) Right 2) Left "); //colonne
+				do
+				{
+					System.out.print("Choix : ");
+			    	choix=sc.nextInt();
+				}while(choix!=1&&choix!=2);
+			}
+			else
+			{
+				choix = 1 + r.nextInt(2); //1 + [0,1], soit 1 ou 2
+				System.out.println("IA : 1) Right 2) Left");
+				System.out.println("Choix de l'ia : " + choix);
+			}
+			
 		}
 		else if (vertical==3) //SAME, on a le droit de rester sur place ou droite / gauche
 		{
-			System.out.println("Coord : [" + this.getListeEquipe().get(identifiant).ligne + "][" + this.getListeEquipe().get(identifiant).colonne + "] / 1) Right 2) Left 3) Same "); //colonne
-			do
+			if (ia!=1)
 			{
-				System.out.print("Choix : ");
-		    	choix=sc.nextInt();
-			}while(choix!=1&&choix!=2&&choix!=3);
+				System.out.println("Coord : [" + this.getListeEquipe().get(identifiant).ligne + "][" + this.getListeEquipe().get(identifiant).colonne + "] / 1) Right 2) Left 3) Same "); //colonne
+				do
+				{
+					System.out.print("Choix : ");
+			    	choix=sc.nextInt();
+				}while(choix!=1&&choix!=2&&choix!=3);
+			}
+			else
+			{
+				choix = 1 + r.nextInt(3); //1 + [0,2], soit 1 ou 2 ou 3
+				System.out.println("IA : 1) Right 2) Left 3) Same");
+				System.out.println("Choix de l'ia : " + choix);
+			}
+			
 		}
 		
 		//RIGHT
@@ -147,18 +178,30 @@ public class Equipe
 		return choix;
 	}
 
-	int verifProchaineLig(int identifiant)
+	int verifProchaineLig(int ia, int identifiant)
 	{
 		int choix;
 		Scanner sc = new Scanner(System.in);
+		Random r = new Random();
 
-		//Coord : [ligne][colonne] / 1) Up 2) Down 3) Same
-		System.out.println("Coord: [" + this.getListeEquipe().get(identifiant).ligne + "][" + this.getListeEquipe().get(identifiant).colonne +"] / 1) Up 2) Down 3) Same"); //ligne
-		do
+
+		if (ia!=1)
 		{
-			System.out.print("Choix : ");
-	    	choix=sc.nextInt();
-		}while(choix!=1&&choix!=2&&choix!=3);
+			//Coord : [ligne][colonne] / 1) Up 2) Down 3) Same
+			System.out.println("Coord: [" + this.getListeEquipe().get(identifiant).ligne + "][" + this.getListeEquipe().get(identifiant).colonne +"] / 1) Up 2) Down 3) Same"); //ligne
+			do
+			{
+				System.out.print("Choix : ");
+		    	choix=sc.nextInt();
+			}while(choix!=1&&choix!=2&&choix!=3);
+		}
+		else
+		{
+			choix = 1 + r.nextInt(3); //soit 1 + [0,2], 1 ou 2 ou 3
+			System.out.println("IA : 1) Up 2) Down 3) Same");
+			System.out.println("Choix de l'ia : " + choix);;
+		}
+		
 
 		//UP
 		if (choix==1)
@@ -199,7 +242,7 @@ public class Equipe
 		for (i=0;i<eq_adverse.getListeEquipe().size();i++)
 		{
 			System.out.println("EQ ADVERSE LIG : " + eq_adverse.getListeEquipe().get(i).ligne + " COL : " + eq_adverse.getListeEquipe().get(i).colonne );
-			System.out.println("MEC ACTUEL , LIG : " + this.getListeEquipe().get(identifiant).ligne + " COL : " + this.getListeEquipe().get(identifiant).colonne);
+			System.out.println("PERSO ACTUEL , LIG : " + this.getListeEquipe().get(identifiant).ligne + " COL : " + this.getListeEquipe().get(identifiant).colonne);
 			if ( (eq_adverse.getListeEquipe().get(i).ligne == this.getListeEquipe().get(identifiant).ligne)&&(eq_adverse.getListeEquipe().get(i).colonne == this.getListeEquipe().get(identifiant).colonne) )
 				return i;
 		}
@@ -232,17 +275,20 @@ public class Equipe
 		System.out.println("Defense lieu : " + bonus_défense_lieu);
 		System.out.println("Apres bonus defense lieu, point def ennemie : " + defense_ennemie);
 		System.out.println("Degat inflige : " + degat);
-
-		//creer un chiffre aleatoire entre -0.5*degat et +0.5*degat
-		coup_critique = (int) (-0.5 * degat) + r.nextInt((int) (0.5 * degat - (-0.5 * degat )));
-
-		System.out.println("Random : " + coup_critique);
-
-		degat += coup_critique;
 		
-		System.out.println("Degat apres random : " + degat); 
+
+		
 		if (degat>0)
 		{
+			if ((int) (0.5 * degat)!=0)
+			{
+				coup_critique = (int) (-0.5 * degat) + r.nextInt((int) (0.5 * degat));
+				System.out.println("Random : " + coup_critique);
+				degat += coup_critique;
+				System.out.println("Degat apres random : " + degat); 
+			}
+			
+
 			eq_adverse.getListeEquipe().get(i_ennemie).setPV(degat); //enlever ses pv de - degat
 			System.out.print("PV ennemie de " + eq_adverse.getListeEquipe().get(i_ennemie).getNom());
 			System.out.println(" : " + eq_adverse.getListeEquipe().get(i_ennemie).getPV());
@@ -531,7 +577,7 @@ public class Equipe
   	}
 
 
-	void deplacer(Graphique graph, Plateau plat, GroupeTerrain terrain, int tour, Equipe eq_adverse)
+	void deplacer(int ia, Graphique graph, Plateau plat, GroupeTerrain terrain, int tour, Equipe eq_adverse)
 	{
 		int identifiant;
 		Scanner sc = new Scanner(System.in);
@@ -541,6 +587,8 @@ public class Equipe
 		int cout_case;
 		boolean case_dispo=true;
 		int depl_initial;
+		Random r = new Random();
+
 
 		//afficher les joueurs de notre equipe pour pouvoir le selectionner
 		this.afficheCarac(this.getListeEquipe());
@@ -550,8 +598,15 @@ public class Equipe
 			System.out.println(i + ") Coord : " + this.getListeEquipe().get(i).ligne + " " + this.getListeEquipe().get(i).colonne);
 		}
 
-		identifiant = selectionUniteEquipe(this.getListeEquipe()); //on recupere l'identifiant du joueur qu'on joue
-		//recuperer le nombre de deplacement du joueur et lorsqu'on sort de la boucle while on remet le nombre de deplacement a ca
+		if (ia!=1)
+			identifiant = selectionUniteEquipe(this.getListeEquipe()); //on recupere l'identifiant du joueur qu'on joue
+		else
+		{
+			identifiant = r.nextInt(5); //random entre [0,4] ou [0,5[
+			System.out.println("Choix de l'ia : " + identifiant);
+		}
+			
+		//recuperer le nombre de deplacement du joueur et lorsqu'on sort de la boucle while on remet le nombre de deplacement a ça
 		depl_initial = this.getListeEquipe().get(identifiant).getDepl(); 
 
 
@@ -575,8 +630,8 @@ public class Equipe
 					return; //on passe son tour car pas de case dispo
 			}	
 
-			choix_lig = verifProchaineLig(identifiant);	//verif si on sort du tableau ou non niveau ligne
-			choix_col = verifProchaineCol(choix_lig, identifiant);  //verif si on sort du tableau ou non niveau colonne
+			choix_lig = verifProchaineLig(ia, identifiant);	//verif si on sort du tableau ou non niveau ligne
+			choix_col = verifProchaineCol(ia , choix_lig, identifiant);  //verif si on sort du tableau ou non niveau colonne
 			occupe = verifProchaineCase(identifiant, plat); //verif si la prochaine case est occupe
 
 			// cout_case = terrain.ListeTerrain.get(plat[ligne][colonne]).getDeplTerrain()
