@@ -226,7 +226,7 @@ public class Plateau
         plat.initPosUnites(equipe2,2,ligne_debut_eq2,colonne_debut_eq2);
 
         System.out.println("Matrices : A gauche, Terrain de jeu / A droite, Positionnement des unites");
-        while(true)
+        while(equipe1.getListeEquipe().size()>0&&equipe2.getListeEquipe().size()>0)
         {
             plat.affichagePlateau(graph);
             System.out.println("\nTour de l'equipe " + (tour_de_jeu+1));
@@ -241,5 +241,9 @@ public class Plateau
             tour_de_jeu+=1;
             tour_de_jeu%=2; //modulo 2
         }
+        if (equipe1.getListeEquipe().size()==0)
+        	System.out.println("L'equipe 2 a gagne !");
+        if(equipe2.getListeEquipe().size()==0)
+        	System.out.println("L'equipe 1 a gagne !");
     }
 }

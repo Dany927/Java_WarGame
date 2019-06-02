@@ -602,7 +602,8 @@ public class Equipe
 			identifiant = selectionUniteEquipe(this.getListeEquipe()); //on recupere l'identifiant du joueur qu'on joue
 		else
 		{
-			identifiant = r.nextInt(5); //random entre [0,4] ou [0,5[
+
+			identifiant = r.nextInt(this.getListeEquipe().size()); //random entre [0,4] ou [0,5[
 			System.out.println("Choix de l'ia : " + identifiant);
 		}
 			
