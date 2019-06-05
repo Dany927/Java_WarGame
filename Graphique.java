@@ -7,6 +7,8 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.*;
 
+import java.io.*;
+
 public class Graphique extends JPanel {
 
 	private final Polygon hexagon = new Polygon();
@@ -20,9 +22,9 @@ public class Graphique extends JPanel {
 	private Image image_village, image_mer, image_chateau, image_foret, image_sable, image_rocher;
 	private Image im_archer, im_cavalerie, im_infanterie, im_infanterie_lourde, im_mage;
 	Image[][] tableauImg = new Image[10][10];
-	private Plateau plat;
-	private Equipe equipe1;
-	private Equipe equipe2;
+	Plateau plat;
+	Equipe equipe1;
+	Equipe equipe2;
 
 	public Graphique(Plateau _plat, Equipe _equipe1, Equipe _equipe2, final int side) {
 		plat = _plat;
@@ -43,8 +45,8 @@ public class Graphique extends JPanel {
 			public void mousePressed(final MouseEvent e) {
 				if (number != -1) {
 					System.out.println("Hexagon " + (number + 1));
-					// System.out.println(e.getX());
-					// System.out.println(e.getY());
+					System.out.println("x : " + e.getX() + " coord x : " + e.getX()/60);
+					System.out.println("y : " + e.getY() + " coord y : " + e.getY()/60);
 
 				}
 			}
@@ -83,6 +85,8 @@ public class Graphique extends JPanel {
 		number = -1;
 		// System.out.println(dimension);
 
+
+		
 
 		for (int row = 0; row < 10; row += 2) {
             for (int column = 0; column < 10; column++) {
@@ -153,6 +157,7 @@ public class Graphique extends JPanel {
                 // g2d.drawImage(image1,0,0,60, 70, this);
             }
         }
+
 		
 		//affichage des unites
 		//on parcourt la liste des unites de l'equipe1 
@@ -172,15 +177,16 @@ public class Graphique extends JPanel {
         	g2d.draw(hexagon);
 
 
-        	if (equipe1.getListeEquipe().get(i).getNom() == "Infanterie")
+        	if (equipe1.getListeEquipe().get(i).getNom().equals("Infanterie"))        	
 				tableauImg[equipe1.getListeEquipe().get(i).ligne][equipe1.getListeEquipe().get(i).colonne] = im_infanterie;
-			if (equipe1.getListeEquipe().get(i).getNom() == "Archer")
+
+			if (equipe1.getListeEquipe().get(i).getNom().equals("Archer"))
 				tableauImg[equipe1.getListeEquipe().get(i).ligne][equipe1.getListeEquipe().get(i).colonne] = im_archer;
-			if (equipe1.getListeEquipe().get(i).getNom() == "Mage")
+			if (equipe1.getListeEquipe().get(i).getNom().equals("Mage"))
 				tableauImg[equipe1.getListeEquipe().get(i).ligne][equipe1.getListeEquipe().get(i).colonne] = im_mage;
-			if (equipe1.getListeEquipe().get(i).getNom() == "Cavalerie")
+			if (equipe1.getListeEquipe().get(i).getNom().equals("Cavalerie"))
 				tableauImg[equipe1.getListeEquipe().get(i).ligne][equipe1.getListeEquipe().get(i).colonne] = im_cavalerie;
-			if (equipe1.getListeEquipe().get(i).getNom() == "Infanterie Lourde")
+			if (equipe1.getListeEquipe().get(i).getNom().equals("Infanterie Lourde"))
 				tableauImg[equipe1.getListeEquipe().get(i).ligne][equipe1.getListeEquipe().get(i).colonne] = im_infanterie_lourde;
 
         	g2d.drawImage(tableauImg[equipe1.getListeEquipe().get(i).ligne][equipe1.getListeEquipe().get(i).colonne],(int)(hexagon.getBounds().x),
@@ -204,15 +210,15 @@ public class Graphique extends JPanel {
    
 
 
-        	if (equipe2.getListeEquipe().get(i).getNom() == "Infanterie")
+        	if (equipe2.getListeEquipe().get(i).getNom().equals("Infanterie"))
 				tableauImg[equipe2.getListeEquipe().get(i).ligne][equipe2.getListeEquipe().get(i).colonne] = im_infanterie;
-			if (equipe2.getListeEquipe().get(i).getNom() == "Archer")
+			if (equipe2.getListeEquipe().get(i).getNom().equals("Archer"))
 				tableauImg[equipe2.getListeEquipe().get(i).ligne][equipe2.getListeEquipe().get(i).colonne] = im_archer;
-			if (equipe2.getListeEquipe().get(i).getNom() == "Mage")
+			if (equipe2.getListeEquipe().get(i).getNom().equals("Mage"))
 				tableauImg[equipe2.getListeEquipe().get(i).ligne][equipe2.getListeEquipe().get(i).colonne] = im_mage;
-			if (equipe2.getListeEquipe().get(i).getNom() == "Cavalerie")
+			if (equipe2.getListeEquipe().get(i).getNom().equals("Cavalerie"))
 				tableauImg[equipe2.getListeEquipe().get(i).ligne][equipe2.getListeEquipe().get(i).colonne] = im_cavalerie;
-			if (equipe2.getListeEquipe().get(i).getNom() == "Infanterie Lourde")
+			if (equipe2.getListeEquipe().get(i).getNom().equals("Infanterie Lourde"))
 				tableauImg[equipe2.getListeEquipe().get(i).ligne][equipe2.getListeEquipe().get(i).colonne] = im_infanterie_lourde;
 
         	g2d.drawImage(tableauImg[equipe2.getListeEquipe().get(i).ligne][equipe2.getListeEquipe().get(i).colonne],(int)(hexagon.getBounds().x),
@@ -220,6 +226,7 @@ public class Graphique extends JPanel {
 
         }
 		
+		//repaint();
 
 
 		if (number != -1) {
