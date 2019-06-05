@@ -2,7 +2,9 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.Random;
 
-public class Equipe
+import java.io.*;
+
+public class Equipe implements Serializable
 {
 
 	private ArrayList<Unite> liste_unite_equipe = new ArrayList<Unite>();
@@ -250,6 +252,18 @@ public class Equipe
 		return -1; //si erreur 
 	}
 
+	/*void coupSelectionne(boolean tab)
+	{
+		for (int i=0;i<tab;i++)
+		{
+			if (tab[i]==true)
+			{
+				System.out.println("Case " + i + " est disponible");
+			}
+		}
+
+
+	}*/
 
 	void attaquer(int identifiant, Plateau plat, GroupeTerrain terrain, Equipe eq_adverse, int ligne_prec, int colonne_prec)
 	{
