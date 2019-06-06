@@ -23,8 +23,8 @@ public class Graphique extends JPanel {
 	private Image im_archer, im_cavalerie, im_infanterie, im_infanterie_lourde, im_mage;
 	Image[][] tableauImg = new Image[10][10];
 	Plateau plat;
-	Equipe equipe1;
-	Equipe equipe2;
+	public Equipe equipe1;
+	public Equipe equipe2;
 
 	public Graphique(Plateau _plat, Equipe _equipe1, Equipe _equipe2, final int side) {
 		plat = _plat;
